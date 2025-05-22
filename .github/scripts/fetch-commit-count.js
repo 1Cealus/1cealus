@@ -1,6 +1,6 @@
 // .github/scripts/fetch-commit-count.js
 import fs from 'fs';
-import { graphql } from '@octokit/graphql';   // ← change here
+import { graphql } from '@octokit/graphql';   
 import minimist from 'minimist';
 
 async function main() {
@@ -9,7 +9,7 @@ async function main() {
     default: { 'out-file': 'commit-count.json' }
   });
 
-  // Create an authenticated graphql client
+
   const client = graphql.defaults({
     headers: {
       authorization: `token ${process.env.GITHUB_TOKEN}`

@@ -1,28 +1,35 @@
 name: Update all-time commits badge
 
+permissions:
+  contents: write
+
 on:
-  # you can adjust the schedule as you like:
   schedule:
-    - cron: '0 0 * * *'     # daily at midnight UTC
-  workflow_dispatch:       # manual trigger
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   update-commit-count:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Fetch all-time commit count
-        run: |
-          node .github/scripts/fetch-commit-count.js \
-            --user "$GITHUB_REPOSITORY_OWNER" \
-            --out-file commit-count.json
+        run: node .github/scripts/fetch-commit-count.js \
+               --user "$GITHUB_REPOSITORY_OWNER" \
+               --out-file commit-count.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
