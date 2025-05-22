@@ -29,7 +29,8 @@
 
 ## 📊 All-Time Commits
 
-![All-Time Commits](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_USERNAME/main/commit-count.json)
+![All-Time Commits](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/1Cealus/1cealus/main/commit-count.json)
+
 
 --
 
