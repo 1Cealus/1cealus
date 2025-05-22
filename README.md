@@ -1,5 +1,3 @@
-<!-- right-aligned profile image (swap in the direct Pinterest image URL) -->
-<img align="right" src="https://i.pinimg.com/736x/4b/41/5a/4b415a56186135b982e3a89c04a3eba2.jpg" width="150"/>
 
 # Hey, I’m Cealus/JM 👋
 
@@ -22,6 +20,18 @@
 ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 
 ---
+
+## 📊 GitHub Stats
+
+![Cealus’ GitHub stats](https://github-readme-stats.vercel.app/api?username=1cealus&show_icons=true&theme=dark&count_private=true)
+
+--
+
+## 🏆 Achievements
+
+![trophy](https://github-profile-trophy.vercel.app/?username=1cealus&theme=dark&no-frame=true)
+
+--
 
 ## 📫 Connect with me
 
