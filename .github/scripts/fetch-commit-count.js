@@ -1,6 +1,6 @@
 // .github/scripts/fetch-commit-count.js
 import fs from 'fs';
-import { request } from '@octokit/graphql';
+import { graphql } from '@octokit/graphql';   // ← change here
 import minimist from 'minimist';
 
 async function main() {
@@ -9,8 +9,11 @@ async function main() {
     default: { 'out-file': 'commit-count.json' }
   });
 
-  const graphql = request.defaults({
-    headers: { authorization: `token ${process.env.GITHUB_TOKEN}` }
+  // Create an authenticated graphql client
+  const client = graphql.defaults({
+    headers: {
+      authorization: `token ${process.env.GITHUB_TOKEN}`
+    }
   });
 
   const query = `
@@ -23,10 +26,9 @@ async function main() {
     }
   `;
 
-  const { user } = await graphql(query, { login: argv.user });
+  const { user } = await client(query, { login: argv.user });
   const total = user.contributionsCollection.totalCommitContributions;
 
-  // Build a Shields.io dynamic-JSON badge payload:
   const badge = {
     schemaVersion: 1,
     label: 'all-time commits',
