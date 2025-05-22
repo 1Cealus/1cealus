@@ -1,6 +1,7 @@
 {
   "name": "1cealus",
   "version": "1.0.0",
+  "type": "module",
   "description": "- 🎓 CS Student @ De La Salle University\r - 🔧 Web and Java Developer\r - 🚀 Check out my biggest project: [iFlashcards](https://iflashcards.netlify.app/)",
   "main": "index.js",
   "scripts": {
