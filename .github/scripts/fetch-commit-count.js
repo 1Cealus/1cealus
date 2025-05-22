@@ -1,36 +1,38 @@
-
+// .github/scripts/fetch-commit-count.js
 import fs from 'fs';
 import { graphql } from '@octokit/graphql';
 import minimist from 'minimist';
 
 async function main() {
   const argv = minimist(process.argv.slice(2), {
-    string: ['user', 'out-file'],
+    string: ['out-file'],
     default: { 'out-file': 'commit-count.json' }
   });
-
-
-  const login = argv.user || process.env.GITHUB_REPOSITORY_OWNER;
+  const login = process.env.GITHUB_REPOSITORY_OWNER;
   if (!login) {
-    console.error('No GitHub user/login provided via --user or GITHUB_REPOSITORY_OWNER');
+    console.error('No GitHub user/login provided');
     process.exit(1);
   }
+
+  // Define the full-range window
+  const from = '1970-01-01T00:00:00Z';                // or your actual join date
+  const to   = new Date().toISOString();
 
   const client = graphql.defaults({
     headers: { authorization: `token ${process.env.GITHUB_TOKEN}` }
   });
 
   const query = `
-    query($login: String!) {
+    query($login: String!, $from: DateTime!, $to: DateTime!) {
       user(login: $login) {
-        contributionsCollection {
+        contributionsCollection(from: $from, to: $to) {
           totalCommitContributions
         }
       }
     }
   `;
 
-  const { user } = await client(query, { login });
+  const { user } = await client(query, { login, from, to });
   const total = user.contributionsCollection.totalCommitContributions;
 
   const badge = {
