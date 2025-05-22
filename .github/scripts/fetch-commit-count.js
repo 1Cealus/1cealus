@@ -1,6 +1,6 @@
-// .github/scripts/fetch-commit-count.js
+
 import fs from 'fs';
-import { graphql } from '@octokit/graphql';   
+import { graphql } from '@octokit/graphql';
 import minimist from 'minimist';
 
 async function main() {
@@ -10,10 +10,14 @@ async function main() {
   });
 
 
+  const login = argv.user || process.env.GITHUB_REPOSITORY_OWNER;
+  if (!login) {
+    console.error('No GitHub user/login provided via --user or GITHUB_REPOSITORY_OWNER');
+    process.exit(1);
+  }
+
   const client = graphql.defaults({
-    headers: {
-      authorization: `token ${process.env.GITHUB_TOKEN}`
-    }
+    headers: { authorization: `token ${process.env.GITHUB_TOKEN}` }
   });
 
   const query = `
@@ -26,7 +30,7 @@ async function main() {
     }
   `;
 
-  const { user } = await client(query, { login: argv.user });
+  const { user } = await client(query, { login });
   const total = user.contributionsCollection.totalCommitContributions;
 
   const badge = {

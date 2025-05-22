@@ -11,7 +11,6 @@ on:
 jobs:
   update-commit-count:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -28,10 +27,10 @@ jobs:
 
       - name: Fetch all-time commit count
         run: node .github/scripts/fetch-commit-count.js \
-               --user "$GITHUB_REPOSITORY_OWNER" \
                --out-file commit-count.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
 
       - name: Commit and push updated badge
         uses: stefanzweifel/git-auto-commit-action@v4
