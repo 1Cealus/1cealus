@@ -27,6 +27,12 @@
 
 --
 
+## 📊 All-Time Commits
+
+![All-Time Commits](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_USERNAME/main/commit-count.json)
+
+--
+
 ## 🏆 Achievements
 
 ![trophy](https://github-profile-trophy.vercel.app/?username=1cealus&theme=dark&no-frame=true)
