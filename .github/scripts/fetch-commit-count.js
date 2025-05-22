@@ -1,8 +1,7 @@
 // .github/scripts/fetch-commit-count.js
-
-const fs = require('fs');
-const { request } = require('@octokit/graphql');
-const minimist = require('minimist');
+import fs from 'fs';
+import { request } from '@octokit/graphql';
+import minimist from 'minimist';
 
 async function main() {
   const argv = minimist(process.argv.slice(2), {
@@ -27,6 +26,7 @@ async function main() {
   const { user } = await graphql(query, { login: argv.user });
   const total = user.contributionsCollection.totalCommitContributions;
 
+  // Build a Shields.io dynamic-JSON badge payload:
   const badge = {
     schemaVersion: 1,
     label: 'all-time commits',
