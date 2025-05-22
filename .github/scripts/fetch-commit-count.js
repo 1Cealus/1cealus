@@ -14,15 +14,27 @@ async function main() {
     process.exit(1);
   }
 
-  // Define the full-range window
-  const from = '1970-01-01T00:00:00Z';                // or your actual join date
-  const to   = new Date().toISOString();
-
   const client = graphql.defaults({
     headers: { authorization: `token ${process.env.GITHUB_TOKEN}` }
   });
 
-  const query = `
+  // 1) Fetch the user's account creation date
+  const userData = await client(
+    `
+    query($login: String!) {
+      user(login: $login) { createdAt }
+    }
+    `,
+    { login }
+  );
+  const createdAt = new Date(userData.user.createdAt);
+  const now = new Date();
+
+  // 2) Break the timeframe into 1-year intervals
+  let from = new Date(createdAt);
+  let totalCommits = 0;
+
+  const yearlyQuery = `
     query($login: String!, $from: DateTime!, $to: DateTime!) {
       user(login: $login) {
         contributionsCollection(from: $from, to: $to) {
@@ -32,16 +44,30 @@ async function main() {
     }
   `;
 
-  const { user } = await client(query, { login, from, to });
-  const total = user.contributionsCollection.totalCommitContributions;
+  while (from < now) {
+    const to = new Date(from);
+    to.setFullYear(to.getFullYear() + 1);
+    if (to > now) to.setTime(now.getTime());
 
+    // fetch this year chunk
+    const resp = await client(yearlyQuery, {
+      login,
+      from: from.toISOString(),
+      to: to.toISOString()
+    });
+    totalCommits += resp.user.contributionsCollection.totalCommitContributions;
+
+    // advance the window
+    from = to;
+  }
+
+  // 3) Write badge JSON
   const badge = {
     schemaVersion: 1,
     label: 'all-time commits',
-    message: String(total),
+    message: String(totalCommits),
     color: 'blue'
   };
-
   fs.writeFileSync(argv['out-file'], JSON.stringify(badge, null, 2));
 }
 
